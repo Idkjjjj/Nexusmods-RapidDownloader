@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Nexus NMM Quick Download",
+  "version": "1.0",
+  "description": "Adds quick NMM download buttons to Nexus Mods links",
+  "permissions": [
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://*.nexusmods.com/*"
+  ],
+  "content_scripts": [{
+    "matches": ["*://*.nexusmods.com/*"],
+    "js": ["content.js"],
+    "css": ["styles.css"]
+  }],
+  "action": {
+    "default_title": "Nexus NMM Quick Download"
+  }
+}

@@ -1,0 +1,23 @@
+.nmm-quick-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+  border-radius: 3px;
+  background: #529251;
+  color: white;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.nmm-quick-download:hover {
+  background: #3d6e3d;
+}
+
+.nmm-quick-download svg {
+  width: 14px;
+  height: 14px;
+}
