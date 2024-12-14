@@ -1,6 +1,10 @@
 function clickSlowDownloadButton() {
+  // Add a flag to prevent multiple clicks
+  if (window.downloadStarted) return;
+  
   const slowDownloadButton = document.querySelector('#slowDownloadButton');
   if (slowDownloadButton) {
+    window.downloadStarted = true;
     slowDownloadButton.click();
   }
 }
@@ -68,18 +72,18 @@ function addQuickDownloadButtons() {
 
 // Check if we're on a download page and click the button if present
 if (window.location.href.includes('file_id') && window.location.href.includes('nmm=1')) {
-  // Try immediately
+  // Only attempt to click once
   clickSlowDownloadButton();
-  
-  // Also try after a short delay in case the button loads dynamically
-  setTimeout(clickSlowDownloadButton, 1000);
   
   // Set up an observer to watch for the button in case it loads later
   const observer = new MutationObserver((mutations, obs) => {
-    const button = document.querySelector('#slowDownloadButton');
-    if (button) {
-      button.click();
-      obs.disconnect(); // Stop observing once we've clicked the button
+    if (!window.downloadStarted) {
+      clickSlowDownloadButton();
+    }
+    
+    // If download has started, disconnect the observer
+    if (window.downloadStarted) {
+      obs.disconnect();
     }
   });
   
