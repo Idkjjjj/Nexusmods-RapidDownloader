@@ -19,8 +19,6 @@ function addQuickDownloadButtons() {
     const match = link.href.match(/nexusmods\.com\/.*?\/mods\/(\d+)/);
     if (!match) return;
     
-    const modId = match[1];
-    
     // Create the quick download button
     const quickDownload = document.createElement('a');
     quickDownload.className = 'nmm-quick-download';
@@ -38,11 +36,9 @@ function addQuickDownloadButtons() {
       e.preventDefault();
       e.stopPropagation();
       
-      // First, go to the files tab
-      const filesUrl = `${link.href}?tab=files`;
-      
       try {
-        const response = await fetch(filesUrl);
+        // Get the files page content
+        const response = await fetch(`${link.href}?tab=files`);
         const text = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, 'text/html');
@@ -51,14 +47,17 @@ function addQuickDownloadButtons() {
         const fileIdMatch = doc.querySelector('a[href*="file_id"][href*="nmm=1"]');
         if (fileIdMatch) {
           const fileId = fileIdMatch.href.match(/file_id=(\d+)/)[1];
-          // Navigate to the download page
-          window.location.href = `${link.href}?tab=files&file_id=${fileId}&nmm=1`;
-        } else {
-          window.location.href = filesUrl;
+          const downloadUrl = `${link.href}?tab=files&file_id=${fileId}&nmm=1`;
+          
+          // Open in new window with minimal UI, positioned off-screen
+          window.open(
+            downloadUrl,
+            'NexusDownload',
+            'width=100,height=100,left=2000,top=2000'
+          );
         }
       } catch (error) {
         console.error('Error fetching mod page:', error);
-        window.location.href = filesUrl;
       }
     });
     
